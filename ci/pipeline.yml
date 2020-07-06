@@ -1,0 +1,54 @@
+---
+groups:
+  - name: pull-requests
+    jobs:
+      - deploy-pr
+
+var_sources:
+- name: vault
+  type: vault
+  config:
+    url: http://vault.vault.svc
+    path_prefix: /concourse
+    client_token: ((auth-token))
+
+resource_types:
+- name: pull-request
+  type: registry-image
+  source:
+    repository: teliaoss/github-pr-resource
+
+resources:
+- name: pull-request
+  type: pull-request
+  icon: github
+  source:
+    repository: secureweb/homelab
+    access_token: ((vault:kv/rft.github))
+
+- name: terraform
+  type: registry-image
+  source:
+    repository: hashicorp/terraform
+    tag: 0.13.0-beta3
+
+- name: openpolicyagent
+  type: registry-image
+  source:
+    repository: openpolicyagent/opa
+
+jobs:
+- name: deploy-pr
+  plan:
+  - get: pull-request
+  - task: terraform workspace create
+    file: pull-request
+    image: terraform
+    input_mapping:
+      - source: pull-request
+  - task: terraform plan
+    file: pull-request
+    image: terraform
+    input_mapping: 
+      - source: pull-request
+
