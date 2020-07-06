@@ -13,7 +13,7 @@ resource "helm_release" "istio-operator" {
 
   set {
     name  = "tag"
-    value = "1.6.0"
+    value = "1.6.1"
   }
 
   set {
@@ -27,3 +27,33 @@ resource "helm_release" "istio-operator" {
   }
 }
 
+resource "kubernetes_manifest" "istio-operator" {
+  provider = kubernetes-alpha
+  manifest = {
+    "apiVersion" = "install.istio.io/v1alpha1"
+    "kind"       = "IstioOperator"
+    "metadata" = {
+      "name"      = "default-istiocontrolplane"
+      "namespace" = "istio-system"
+    }
+    "spec" = {
+      "profile" = "default"
+      "addonComponents" = {
+        "grafana" = {
+          "enabled" = true
+        }
+      }
+      "components" = {
+        "cni" = {
+          "enabled" = true
+        }
+      }
+      "values" = {
+        "cni" = {
+          "excludeNamespaces" = ["istio-system", "kube-system"]
+          "logLevel"          = "info"
+        }
+      }
+    }
+  }
+}

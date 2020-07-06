@@ -7,7 +7,7 @@ provider "kubernetes-alpha" {}
 
 provider "vault" {
   address = "https://vault${var.base_domain}"
-  token   = ""
+  token   = var.vault_token
 }
 
 provider "concourse" {

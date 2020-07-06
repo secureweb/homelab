@@ -4,6 +4,7 @@ resource "helm_release" "cilium" {
   repository = "https://helm.cilium.io/"
   chart      = "cilium"
   namespace  = "kube-system"
+  version    = "v1.7.4"
 
   set {
     name  = "global.containerRuntime.integration"
@@ -29,12 +30,5 @@ resource "helm_release" "cilium" {
     name  = "global.k8sServicePort"
     value = "6443"
   }
-
-  set {
-    name  = "global.cni.tunnel"
-    value = "disabled"
-
-  }
-
 
 }

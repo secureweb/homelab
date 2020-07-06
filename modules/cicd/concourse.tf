@@ -37,7 +37,12 @@ resource "helm_release" "concourse" {
 
   set {
     name  = "concourse.web.localAuth.enabled"
-    value = false
+    value = true
+  }
+
+  set {
+    name  = "secrets.localUsers"
+    value = "autoboarder:?Pwqq2r%Z!m#co<=d]urwQ7OHQ)NSQCY"
   }
 
   set {
@@ -67,7 +72,7 @@ resource "helm_release" "concourse" {
 
   set {
     name  = "concourse.web.auth.oidc.userNameKey"
-    value = "name"
+    value = "upn"
   }
 
   set {
@@ -77,7 +82,7 @@ resource "helm_release" "concourse" {
 
   set {
     name  = "concourse.web.auth.mainTeam.oidc.group"
-    value = "main_owners"
+    value = "superusers"
   }
 
   set {

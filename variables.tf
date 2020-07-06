@@ -26,3 +26,7 @@ variable "additional_owners" {
   type    = list
   default = []
 }
+
+variable "vault_token" {
+  type = string
+}

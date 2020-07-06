@@ -24,6 +24,8 @@ module "cicd" {
 
 module "network" {
   source = "./modules/network"
+
+  base_domain = var.base_domain
 }
 
 module "secret" {
@@ -35,4 +37,10 @@ module "secret" {
   oidc_client_secret  = module.azure.vault_client_secret
   oidc_discovery_url  = "https://login.microsoftonline.com/${var.azure_tenant}/v2.0"
   vault_redirect_uris = local.vault_redirect_uris
+}
+
+module "services" {
+  source = "./modules/services"
+
+  base_domain = var.base_domain
 }

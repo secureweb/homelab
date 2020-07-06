@@ -39,6 +39,12 @@ resource "vault_identity_group" "super_user" {
   external_policies = true
 }
 
+resource "vault_identity_group_alias" "super_user" {
+  name           = "superusers"
+  mount_accessor = vault_jwt_auth_backend.azure.accessor
+  canonical_id   = vault_identity_group.super_user.id
+}
+
 resource "vault_identity_group_policies" "super_user" {
   policies = [
     "default",
@@ -48,8 +54,3 @@ resource "vault_identity_group_policies" "super_user" {
   group_id  = vault_identity_group.super_user.id
 }
 
-resource "vault_identity_group_alias" "super_user" {
-  name           = "superusers"
-  mount_accessor = vault_jwt_auth_backend.azure.accessor
-  canonical_id   = vault_identity_group.super_user.id
-}
