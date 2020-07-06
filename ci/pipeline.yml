@@ -9,7 +9,6 @@ var_sources:
   type: vault
   config:
     url: http://vault.vault.svc
-    path_prefix: /concourse
     client_token: ((auth-token))
 
 resource_types:
@@ -24,7 +23,7 @@ resources:
   icon: github
   source:
     repository: secureweb/homelab
-    access_token: ((vault:kv/rft.github))
+    access_token: ((vault:kv/github))
 
 - name: terraform
   type: registry-image
@@ -40,15 +39,19 @@ resources:
 jobs:
 - name: deploy-pr
   plan:
-  - get: pull-request
+  - in_parallel:
+    - get: pull-request
+      trigger: true
+    - get: terraform
+    - get: openpolicyagent
   - task: terraform workspace create
     file: pull-request
     image: terraform
     input_mapping:
-      - source: pull-request
+      source: pull-request
   - task: terraform plan
     file: pull-request
     image: terraform
     input_mapping: 
-      - source: pull-request
+      source: pull-request
 

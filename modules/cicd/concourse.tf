@@ -37,12 +37,7 @@ resource "helm_release" "concourse" {
 
   set {
     name  = "concourse.web.localAuth.enabled"
-    value = true
-  }
-
-  set {
-    name  = "secrets.localUsers"
-    value = "autoboarder:?Pwqq2r%Z!m#co<=d]urwQ7OHQ)NSQCY"
+    value = false
   }
 
   set {
@@ -87,22 +82,7 @@ resource "helm_release" "concourse" {
 
   set {
     name  = "concourse.web.kubernetes.enabled"
-    value = "false"
-  }
-
-  set {
-    name  = "concourse.web.vault.enabled"
     value = "true"
-  }
-
-  set {
-    name  = "concourse.web.vault.url"
-    value = "http://vault.vault.svc:8200"
-  }
-
-  set {
-    name  = "concourse.web.vault.authBackend"
-    value = "approle"
   }
 
 }
