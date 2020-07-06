@@ -1,0 +1,22 @@
+---
+platform: linux
+
+input:
+  - name: source
+
+output:
+  - name: tfplan
+
+params:
+  TF_IN_AUTOMATION: 1
+
+run: 
+  dir: source
+  path: sh
+  args:
+    - -c
+    - |
+      set -euo pipefail
+      echo "Running Terraform Init"
+
+      terraform init -input=false

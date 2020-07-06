@@ -1,0 +1,26 @@
+---
+platform: linux
+
+input:
+  - name: source
+
+output:
+  - name: tfplan
+
+params:
+  TF_IN_AUTOMATION: 1
+
+run: 
+  dir: source
+  path: sh
+  args:
+    - -c
+    - |
+      set -euo pipefail
+      echo "Running Terraform Plan"
+
+      terraform init -input=false
+      terraform workspace select ${TARGET_ENVIRONMENT}-$(cat .git/resource/head_sha | head -c 8)
+
+      terraform plan -out=../tfplan/tfplan -input=false
+

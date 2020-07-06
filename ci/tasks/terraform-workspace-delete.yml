@@ -1,0 +1,22 @@
+---
+platform: linux
+
+inputs:
+  - name: source
+
+params:
+  TF_IN_AUTOMATION: 1
+
+run:
+  dir: source
+  path: sh
+  args:
+    - -c
+    - |
+      set -euo pipefail
+      echo "Running Terraform workspace delete for -$(cat .git/resource/head_sha | head -c 8)"
+
+      terraform init -input=false
+      terraform workspace delete ${TARGET_ENVIRONMENT}-$(cat .git/resource/head_sha | head -c 8)
+
+
