@@ -134,6 +134,9 @@ module "loki" {
 
 module "grafana" {
   source = "./modules/grafana"
-
   base_domain = var.base_domain
+}
+
+module "gitea" {
+  source = "./modules/gitea"
 }

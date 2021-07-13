@@ -2,6 +2,10 @@ provider "kubernetes-alpha" {
   config_path = "~/.kube/config" // path to kubeconfig
 }
 
+provider "kubernetes" {
+  config_path = "~/.kube/config" // path to kubeconfig
+}
+
 provider "helm" {
   kubernetes {
     config_path = "~/.kube/config"
@@ -14,7 +18,7 @@ provider "azuread" {
   tenant_id     = var.azuread_tenant
 }
 
-provider "vault" {
-  address = "https://vault.secureweb.ltd"
-  token   = ""
-}
+#provider "vault" {
+#  address = "https://vault.secureweb.ltd"
+#  token   = ""
+#}
